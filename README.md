@@ -16,7 +16,7 @@ Pour le bonne utilisation de ce script vous aurez besoin :
 Configuration
 ===
 
-Pour commencer il faut éditer le fichier Config.rb avec les informations suivantes :
+Pour commencer il faut éditer le fichier BSConfig.rb avec les informations suivantes :
 
 * **User** : Nom d'utilisateur BetaSeries
 * **Password** : Mot de passe BetaSeries
