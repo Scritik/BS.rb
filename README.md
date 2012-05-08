@@ -9,6 +9,7 @@ Pour le bonne utilisation de ce script vous aurez besoin :
 
 * Un compte [BetaSeries](http://betaseries.com)
 * Une [clé API BetaSeries](http://www.betaseries.com/api)
+* *Ajouter une option dans "Mes épisodes" pour marquer les épisodes comme "récupérés"* doit être activée dans votre [compte BetaSeries](http://www.betaseries.com/compte)
 * [Ruby](http://www.ruby-lang.org/fr/)
 * La [gem JSON](http://flori.github.com/json/)
 
