@@ -81,7 +81,7 @@ class BetaSeries
 			req = Net::HTTP::Get.new("/subtitles/show.json?file=#{episode}&key=#{BSConfig::APIkey}")
 			response = http.request(req)
 			content = JSON.parse(response.body)
-			if !content['root']['subtitles'].nil?
+			if !content['root']['subtitles'].nil? and !content['root']['subtitles'].empty?
 			  add_to_cache episode
   			serie = JSON.parse(response.body)['root']['subtitles']['0']['title']
   			season = JSON.parse(response.body)['root']['subtitles']['0']['season']
