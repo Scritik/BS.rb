@@ -63,8 +63,10 @@ class BetaSeries
 		JSON.parse(response.body)['root']['episodes'].each_value do |ep|
 			@episodes[ep['show'].downcase] = Array.new unless @episodes.has_key? ep['show'].downcase
 			@episodes[ep['show'].downcase].push("#{ep['season']}x#{ep['episode']}") if ep['downloaded'] === "0"
-			puts "#{ep['show']} #{@episodes[ep['show'].downcase]}" if ep['downloaded'] === "0"  
 			@shows[ep['show'].downcase] = ep['url']
+		end
+		@shows.each do |s, url|
+		  puts "#{s} #{@episodes[s.downcase]}" if !@episodes[s.downcase].empty?
 		end
 		puts "================================"
 	end
