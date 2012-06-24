@@ -20,9 +20,9 @@ class BetaSeries
 
 	def getCache
 		if !File.exist? "cache.bs"
-			puts "Pas de cache. Creation du cache."
+			puts "No cache. Creating cache."
 			@cacheFile = File.new("cache.bs", "w+")
-			puts "Creation du cache OK"
+			puts "Cache done"
 		else
 			@cacheFile = File.open("cache.bs", "a+")
 			@cacheFile.rewind
@@ -56,10 +56,10 @@ class BetaSeries
 	end
 	
 	def get_episodes
-		puts "Chargement de la liste des episodes non vus..."
+		puts "Loading not seen TV Shows..."
 		url = "http://api.betaseries.com/members/episodes/all.json?token=#{@token}&key=#{BSConfig::APIkey}"
 		response = Net::HTTP.get_response(URI.parse(url))
-		puts "======= EPISODES NON VUS ======="
+		puts "======= NOT DOWNLOADED TV SHOWS ======="
 		JSON.parse(response.body)['root']['episodes'].each_value do |ep|
 			@episodes[ep['show'].downcase] = Array.new unless @episodes.has_key? ep['show'].downcase
 			@episodes[ep['show'].downcase].push("#{ep['season']}x#{ep['episode']}") if ep['downloaded'] === "0"
