@@ -80,10 +80,17 @@ class BetaSeries
 		Net::HTTP.start("api.betaseries.com") {|http|
 			req = Net::HTTP::Get.new("/subtitles/show.json?file=#{episode}&key=#{BSConfig::APIkey}")
 			response = http.request(req)
-			serie = JSON.parse(response.body)['root']['subtitles']['0']['title']
-			season = JSON.parse(response.body)['root']['subtitles']['0']['season']
-			episode = JSON.parse(response.body)['root']['subtitles']['0']['episode']
-			Hash["show", serie, "season", season, "episode", episode]
+			content = JSON.parse(response.body)
+			if !content['root']['subtitles'].nil?
+			  add_to_cache episode
+  			serie = JSON.parse(response.body)['root']['subtitles']['0']['title']
+  			season = JSON.parse(response.body)['root']['subtitles']['0']['season']
+  			episode = JSON.parse(response.body)['root']['subtitles']['0']['episode']
+  			return Hash["show", serie, "season", season, "episode", episode]
+			else
+			  puts "TV Show not found : #{episode}"
+				return nil
+		  end
 		}
 	end
 	
@@ -95,18 +102,18 @@ class BetaSeries
 	def mark_all_as_downloaded
 		@files.each do |e|
 			if !@cache.include? "#{e}\n"
-				begin
-					puts e
-					infos = get_infos e
-					puts "#{infos['show']} #{infos['season']}x#{infos['episode']}"
-					if @episodes.has_key? infos['show'].downcase and @episodes[infos['show'].downcase].include? "#{infos['season']}x#{infos['episode']}"
-						mark_as_dowloaded @shows[infos['show'].downcase], infos['season'], infos['episode']
-						puts "=> Mark as downloaded !"
-					end
-					add_to_cache e 
-				end
-				puts "========"
-			end
+				infos = get_infos e
+				if !infos.nil?
+  				puts "#{infos['show']} S#{infos['season'].to_i < 10 ? '0' : ''}#{infos['season']}E#{infos['episode'].to_i < 10 ? '0' : ''}#{infos['episode']}"
+  				if @episodes.has_key? infos['show'].downcase and @episodes[infos['show'].downcase].include? "#{infos['season']}x#{infos['episode']}"
+  					mark_as_dowloaded @shows[infos['show'].downcase], infos['season'], infos['episode']
+  					puts "=> Mark as downloaded !"
+  				else
+  				  puts "This episode is not in your BetaSeries list or already downloaded. Ignored."
+  				end
+  		  end
+  		  puts "========"
+  		end
 		end
 	end
 	
